@@ -83,4 +83,4 @@ class FileReader:
                 # Add logic for generating pie chart
                 pass
             else:
-                print(f"Unsupported plot type: {plot_type}"
+                print(f"Unsupported plot type: {plot_type}")
