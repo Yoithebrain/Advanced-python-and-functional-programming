@@ -1,3 +1,3 @@
 /.vscode
 /__pycache__
-/Files/really_big_file_with_errors.txt
+really_big_file_with_errors.txt
