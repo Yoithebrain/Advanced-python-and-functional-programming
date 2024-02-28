@@ -1,5 +1,5 @@
 # imports
-
+import matplotlib.pyplot as plt
 # global variables for object
 
 
@@ -31,13 +31,13 @@ class FileReader:
             print(f"Error: File '{self.file_path}' not found.")
         except Exception as e:
             print(f"Error occurred during reading of file: '{e}'")
-    def process_rows(self, rows):
+    def process_rows(self, rows, filter_func=None):
         row_Num = 0
         for row in rows:
             try:
-                # In case we have empty line
-                if not row.strip():
-                    raise ValueError("Empty line")
+                # Apply filtering function if provided
+                if filter_func and not filter_func(row):
+                    continue  # Skip processing if the row doesn't meet the filtering criteria
                 # Split to filter and parse the data
                 fields = row.split(',')
                 name_title = fields[0].strip()
@@ -62,3 +62,25 @@ class FileReader:
             except Exception as e:
                 print(f"Error occurred while processing file at line {row_Num}: {str(e)}")
                 break
+    def analyze_rows_plot_rows(self, rows, plot_types=['histogram']):
+        # Analysis and plot generation logic goes here
+        for plot_type in plot_types:
+            if plot_type == 'histogram':
+                job_titles = []
+                for row in rows:
+                    fields = row.split(',')
+                    if len(fields) >= 2:  # Assuming job title is at index 1
+                        job_titles.append(fields[1].strip())
+                plt.hist(job_titles, bins=20)
+                plt.xlabel('Job Titles')
+                plt.ylabel('Frequency')
+                plt.title('Distribution of Job Titles')
+                yield plt
+            elif plot_type == 'bar':
+                # Add logic for generating bar plot
+                pass
+            elif plot_type == 'pie':
+                # Add logic for generating pie chart
+                pass
+            else:
+                print(f"Unsupported plot type: {plot_type}"

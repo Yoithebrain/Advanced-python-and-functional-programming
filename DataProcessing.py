@@ -64,5 +64,6 @@ def get_lines ():
 print("READING FILE:")
 #get_line(5)
 #get_lines()
+remove_empty_row = lambda row: all(field for field in row.split(','))
 lines = reader.read_lines()
 reader.process_rows(lines)
