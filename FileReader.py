@@ -1,5 +1,6 @@
 # imports
 import matplotlib.pyplot as plt
+import os
 # global variables for object
 
 
@@ -62,20 +63,53 @@ class FileReader:
             except Exception as e:
                 print(f"Error occurred while processing file at line {row_Num}: {str(e)}")
                 break
-    def analyze_rows_plot_rows(self, rows, plot_types=['histogram']):
+    def analyze_rows_plot_rows(self, rows, plot_types=['histogram'], output_dir='plots', x_field=None, y_field=None):
+        # Define the fields to search for, taken from parameters. Defaults to none.
+        x_target_field = x_field 
+        y_target_field = y_field
+        # Process rows to extract x and y values
+        x_values_list = []
+        y_values_list = []
+        for row in rows:
+            fields = row.split(',')
+            # Search for the target field in the row
+            x_value = None
+            y_value = None
+            for field in fields:
+                key, value = field.split(':')  # Assuming fields are in key:value format
+                if key.strip() == x_target_field:
+                    x_value = float(value.strip())  # Convert to appropriate data type if necessary
+                elif key.strip() == y_target_field:
+                    y_value = float(value.strip())  # Convert to appropriate data type if necessary
+                # If both x and y values are found, break the loop
+                if x_value is not None and y_value is not None:
+                    break
+            # Add x and y values to their respective lists
+            if x_value is not None and y_value is not None:
+                x_values_list.append(x_value)
+                y_values_list.append(y_value)
+
+        # Combine x and y values into a list of tuples (each tuple represents one set of x and y values)
+        xy_values = list(zip(x_values_list, y_values_list))
+        # Creation of folder
+        os.makedirs(output_dir, exist_ok=True)
+
         # Analysis and plot generation logic goes here
         for plot_type in plot_types:
             if plot_type == 'histogram':
-                job_titles = []
-                for row in rows:
-                    fields = row.split(',')
-                    if len(fields) >= 2:  # Assuming job title is at index 1
-                        job_titles.append(fields[1].strip())
-                plt.hist(job_titles, bins=20)
-                plt.xlabel('Job Titles')
-                plt.ylabel('Frequency')
-                plt.title('Distribution of Job Titles')
-                yield plt
+                if xy_values:
+                    for i, (x_values, y_values) in enumerate(xy_values):
+                        plt.hist2d(x_values, y_values, bins=20)
+                        plt.xlabel('X Label')
+                        plt.ylabel('Y Label')
+                        plt.title('2D Histogram Plot')
+                        plot_filename = f"histogram_plot_{x_field}_{y_field}.png"
+                        plot_filepath = os.path.join(output_dir, plot_filename)
+                        plt.savefig(plot_filepath)
+                        plt.close()
+                        yield plot_filepath
+                else:
+                    print("Please provide both x_values and y_values for the histogram plot.")
             elif plot_type == 'bar':
                 # Add logic for generating bar plot
                 pass
