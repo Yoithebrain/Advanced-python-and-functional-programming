@@ -29,15 +29,20 @@ def read_file(reader, queue):
     queue.put("END")
 
 
-def process_lines(queue, reader):
-    line_count = 0
+def process_lines(queue, reader, batch_size=5000):
+    batch = []
     while True:
         line = queue.get()
         if line == "END":
             break
-        reader.process_rows([line])
-        line_count += 1
-        print(f"Processed {line_count} lines", end="\r")
+        batch.append(line)
+        if len(batch) >= batch_size:
+            reader.process_rows(batch)
+            batch.clear()
+            print(f"Processed {len(batch)} lines", end="\r")
+    if batch:
+        reader.process_rows(batch)
+        print(f"Processed {len(batch)} lines", end="\r")
 ###
 # Trying to multiprocess this now, for better performance
 # - CLY 290224 -
@@ -46,58 +51,18 @@ def main ():
     # Init profiler
     pr = cProfile.Profile()
     pr.enable()
+    # Perform file reading and processing here
     reader = FileReader('files\\really_big_file_with_errors.txt')
-    # The number of proccesors, now based on cpu count
-    num_of_processors = multiprocessing.cpu_count()
-    # Creation of a pool of processors
-    pool = multiprocessing.Pool(processes=num_of_processors)
-
-
-    # Creates queue for processors to communicate between and a manager to facilitate this due to making use of a pool to avoid
-    # run time errors
-    manager = multiprocessing.Manager()
-    queue = manager.Queue()
-    # Making use of the pool to help speed things up
+    # queue an pool setup
+    queue = multiprocessing.Manager().Queue()
+    pool = multiprocessing.Pool(processes=multiprocessing.cpu_count())
+    # Pool applies to functions
     pool.apply_async(read_file, args=(reader, queue))
     pool.apply_async(process_lines, args=(queue, reader))
-
-
-
-    #pool.close()
-    #pool.join()
+    # Ending of pool resources
+    pool.close()  # No more tasks will be added to the pool
+    pool.join()   # Wait for all processes to complete
     
-    '''
-    # Create a process that reads the file
-    reader_process = multiprocessing.Process(target=read_file, args=(reader, queue))
-    reader_process.start()
-    # Create a process that handles processing the lines from the queue
-    line_processing_process = multiprocessing.Process(target=process_lines, args=(queue, reader))
-    line_processing_process.start()
-
-    # Wait for the processors to finish
-    reader_process.join()
-    line_processing_process.join()
-    '''
-    '''
-    ###
-    # This code turned out to be slower, issue might be due to the fact that the queue fills faster than it can be emptied.
-    # - CLY 290224 -
-    ###
-    # Creates queue for processors to communicate between
-    queue = multiprocessing.Queue()
-    # Create a process that reads the file
-    reader_process = multiprocessing.Process(target=read_file, args=(reader, queue))
-    reader_process.start()
-    # Create a process that handles processing the lines from the queue
-    line_processing_process = multiprocessing.Process(target=process_lines, args=(queue, reader))
-    line_processing_process.start()
-
-    
-
-    # Wait for the processors to finish
-    reader_process.join()
-    line_processing_process.join()
-   '''
     pr.disable()
     pr.print_stats(sort='cumulative')
 
