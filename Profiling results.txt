@@ -1313,6 +1313,493 @@ Clearly the batching helps, I'll increase it by 10 which would be 10k and test i
 Even worse results. Probably due to the fact that the queue can't fill up faster enough to more than 7k before the other process locks
 the file to do its thing.
 
+Last attempt
+239269222 function calls (239269009 primitive calls) in 2192.377 seconds
+
+   Ordered by: cumulative time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000 1315.341 1315.341 pool.py:656(join)
+       16 1315.269   82.204 1315.269   82.204 {method 'acquire' of '_thread.lock' objects}
+        3    0.000    0.000 1315.268  438.423 threading.py:997(join)
+        3    0.000    0.000 1315.268  438.423 threading.py:1035(_wait_for_tstate_lock)
+  8535515    6.558    0.000  857.695    0.000 <string>:1(put)
+  8535515   20.201    0.000  851.137    0.000 managers.py:796(_callmethod)
+  8535520   29.445    0.000  632.098    0.000 connection.py:251(recv)
+  8535532   36.254    0.000  580.850    0.000 connection.py:299(_recv_bytes)
+  8534931  505.495    0.000  505.495    0.000 {built-in method _winapi.WaitForMultipleObjects}
+  8535519   21.477    0.000  199.515    0.000 connection.py:207(send)
+  8535520   17.480    0.000   89.758    0.000 reduction.py:48(dumps)
+  8535532   12.849    0.000   84.486    0.000 connection.py:284(_send_bytes)
+  8535532   67.243    0.000   67.243    0.000 {built-in method _winapi.WriteFile}
+  8535524   32.185    0.000   45.544    0.000 reduction.py:38(__init__)
+  8535524   25.027    0.000   25.028    0.000 {method 'dump' of '_pickle.Pickler' objects}
+  8535532   20.929    0.000   20.929    0.000 {built-in method _winapi.ReadFile}
+  8535515   14.596    0.000   18.635    0.000 FileReader.py:23(read_lines)
+ 17071068   16.668    0.000   16.668    0.000 {method 'GetOverlappedResult' of '_winapi.Overlapped' objects}
+  8535520   15.113    0.000   15.113    0.000 {built-in method _pickle.loads}
+  8535527   10.444    0.000   10.444    0.000 {method 'update' of 'dict' objects}
+ 17071040    5.694    0.000    5.694    0.000 {method 'getbuffer' of '_io.BytesIO' objects}
+ 17071069    3.419    0.000    3.419    0.000 connection.py:139(_check_closed)
+  8535532    3.210    0.000    3.210    0.000 {method 'write' of '_io.BytesIO' objects}
+  8535527    2.915    0.000    2.915    0.000 {method 'copy' of 'dict' objects}
+   134706    0.303    0.000    2.084    0.000 cp1252.py:22(decode)
+  8535514    1.948    0.000    1.948    0.000 {method 'strip' of 'str' objects}
+   134706    1.781    0.000    1.781    0.000 {built-in method _codecs.charmap_decode}
+  8535532    1.700    0.000    1.700    0.000 connection.py:147(_check_writable)
+  8535532    1.481    0.000    1.481    0.000 {method 'getbuffer' of '_winapi.Overlapped' objects}
+  8535532    1.380    0.000    1.380    0.000 connection.py:143(_check_readable)
+8535907/8535885    1.205    0.000    1.205    0.000 {built-in method builtins.len}
+        1    0.000    0.000    0.696    0.696 context.py:49(Manager)
+        1    0.000    0.000    0.687    0.687 managers.py:526(start)
+        1    0.000    0.000    0.073    0.073 process.py:142(join)
+        2    0.000    0.000    0.073    0.036 popen_spawn_win32.py:101(wait)
+        2    0.073    0.036    0.073    0.036 {built-in method _winapi.WaitForSingleObject}
+     15/4    0.000    0.000    0.017    0.004 <frozen importlib._bootstrap>:1002(_find_and_load)
+     15/4    0.000    0.000    0.017    0.004 <frozen importlib._bootstrap>:967(_find_and_load_unlocked)
+     15/4    0.000    0.000    0.016    0.004 <frozen importlib._bootstrap>:659(_load_unlocked)
+     12/4    0.000    0.000    0.016    0.004 <frozen importlib._bootstrap_external>:784(exec_module)
+    70/13    0.001    0.000    0.013    0.001 {built-in method builtins.exec}
+     23/4    0.000    0.000    0.013    0.003 <frozen importlib._bootstrap>:220(_call_with_frames_removed)
+        2    0.000    0.000    0.012    0.006 process.py:110(start)
+        2    0.000    0.000    0.012    0.006 context.py:324(_Popen)
+    23/14    0.000    0.000    0.009    0.001 <frozen importlib._bootstrap>:1033(_handle_fromlist)
+      5/4    0.000    0.000    0.009    0.002 {built-in method builtins.__import__}
+        1    0.000    0.000    0.009    0.009 managers.py:11(<module>)
+       12    0.000    0.000    0.008    0.001 <frozen importlib._bootstrap_external>:856(get_code)
+        3    0.007    0.002    0.007    0.002 {built-in method io.open}
+        1    0.000    0.000    0.007    0.007 context.py:115(Pool)
+        1    0.000    0.000    0.007    0.007 pool.py:183(__init__)
+        2    0.000    0.000    0.007    0.003 popen_spawn_win32.py:44(__init__)
+        2    0.006    0.003    0.006    0.003 {built-in method _winapi.CreateProcess}
+       12    0.000    0.000    0.005    0.000 <frozen importlib._bootstrap_external>:976(get_data)
+       12    0.004    0.000    0.004    0.000 {built-in method io.open_code}
+        1    0.000    0.000    0.004    0.004 popen_spawn_win32.py:1(<module>)
+        1    0.000    0.000    0.003    0.003 pool.py:302(_repopulate_pool)
+        1    0.000    0.000    0.003    0.003 pool.py:311(_repopulate_pool_static)
+        1    0.000    0.000    0.003    0.003 spawn.py:11(<module>)
+       15    0.000    0.000    0.003    0.000 <frozen importlib._bootstrap>:901(_find_spec)
+        1    0.000    0.000    0.003    0.003 managers.py:712(temp)
+       14    0.000    0.000    0.003    0.000 <frozen importlib._bootstrap_external>:1341(find_spec)
+       14    0.000    0.000    0.003    0.000 <frozen importlib._bootstrap_external>:1309(_get_spec)
+        4    0.000    0.000    0.003    0.001 connection.py:498(Client)
+       22    0.000    0.000    0.003    0.000 <frozen importlib._bootstrap_external>:1438(find_spec)
+        3    0.000    0.000    0.003    0.001 context.py:110(SimpleQueue)
+       48    0.000    0.000    0.003    0.000 <frozen importlib._bootstrap_external>:80(_path_stat)
+        1    0.000    0.000    0.003    0.003 pool.py:342(_setup_queues)
+       48    0.003    0.000    0.003    0.000 {built-in method nt.stat}
+        4    0.000    0.000    0.002    0.001 connection.py:752(answer_challenge)
+        1    0.000    0.000    0.002    0.002 runpy.py:1(<module>)
+        1    0.000    0.000    0.002    0.002 connection.py:10(<module>)
+       12    0.000    0.000    0.002    0.000 connection.py:213(recv_bytes)
+       12    0.000    0.000    0.002    0.000 <frozen importlib._bootstrap_external>:585(_compile_bytecode)
+       12    0.002    0.000    0.002    0.000 {built-in method marshal.loads}
+       15    0.000    0.000    0.002    0.000 <frozen importlib._bootstrap>:558(module_from_spec)
+        3    0.000    0.000    0.002    0.001 queues.py:340(__init__)
+        5    0.000    0.000    0.001    0.000 managers.py:939(MakeProxyType)
+        2    0.000    0.000    0.001    0.001 <frozen importlib._bootstrap_external>:1106(create_module)
+        2    0.001    0.001    0.001    0.001 {built-in method _imp.create_dynamic}
+        1    0.000    0.000    0.001    0.001 managers.py:592(_create)
+        3    0.000    0.000    0.001    0.000 context.py:65(Lock)
+       14    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap_external>:99(_path_isfile)
+       14    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap_external>:90(_path_is_mode_type)
+        1    0.000    0.000    0.001    0.001 managers.py:961(AutoProxy)
+        1    0.000    0.000    0.001    0.001 queue.py:1(<module>)
+        3    0.000    0.000    0.001    0.000 threading.py:851(start)
+        1    0.000    0.000    0.001    0.001 pkgutil.py:1(<module>)
+        3    0.000    0.000    0.001    0.000 threading.py:556(wait)
+        3    0.000    0.000    0.001    0.000 threading.py:280(wait)
+       67    0.001    0.000    0.001    0.000 {built-in method builtins.__build_class__}
+        1    0.000    0.000    0.001    0.001 managers.py:746(__init__)
+        1    0.000    0.000    0.001    0.001 managers.py:787(_connect)
+        1    0.000    0.000    0.001    0.001 managers.py:832(_incref)
+       12    0.001    0.000    0.001    0.000 {method 'read' of '_io.BufferedReader' objects}
+        4    0.000    0.000    0.001    0.000 connection.py:540(Pipe)
+        1    0.000    0.000    0.001    0.001 re.py:250(compile)
+        1    0.000    0.000    0.001    0.001 re.py:289(_compile)
+        1    0.000    0.000    0.001    0.001 sre_compile.py:759(compile)
+        4    0.000    0.000    0.001    0.000 managers.py:84(dispatch)
+        4    0.000    0.000    0.000    0.000 reduction.py:58(dump)
+       12    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1017(path_stats)
+        4    0.000    0.000    0.000    0.000 connection.py:69(arbitrary_address)
+       15    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:486(_init_module_attrs)
+        1    0.000    0.000    0.000    0.000 sre_parse.py:937(parse)
+        4    0.000    0.000    0.000    0.000 tempfile.py:375(mktemp)
+     14/1    0.000    0.000    0.000    0.000 sre_parse.py:435(_parse_sub)
+       15    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:156(__enter__)
+     14/1    0.000    0.000    0.000    0.000 sre_parse.py:493(_parse)
+        4    0.000    0.000    0.000    0.000 connection.py:737(deliver_challenge)
+       15    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:166(_get_module_lock)
+        4    0.000    0.000    0.000    0.000 connection.py:700(PipeClient)
+       15    0.000    0.000    0.000    0.000 {method '__exit__' of '_io._IOBase' objects}
+       23    0.000    0.000    0.000    0.000 {built-in method builtins.next}
+       24    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:301(cache_from_source)
+        8    0.000    0.000    0.000    0.000 hmac.py:153(new)
+       26    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:385(cached)
+        7    0.000    0.000    0.000    0.000 tempfile.py:145(__next__)
+       13    0.000    0.000    0.000    0.000 connection.py:186(send_bytes)
+        8    0.000    0.000    0.000    0.000 hmac.py:38(__init__)
+       14    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:431(_get_cached)
+      104    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:62(_path_join)
+       15    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:58(__init__)
+        4    0.000    0.000    0.000    0.000 {built-in method _winapi.CreateNamedPipe}
+        1    0.000    0.000    0.000    0.000 shared_memory.py:1(<module>)
+        1    0.000    0.000    0.000    0.000 sre_compile.py:598(_code)
+        3    0.000    0.000    0.000    0.000 threading.py:777(__init__)
+        4    0.000    0.000    0.000    0.000 tempfile.py:76(_exists)
+        1    0.000    0.000    0.000    0.000 pool.py:10(<module>)
+     22/1    0.000    0.000    0.000    0.000 sre_compile.py:71(_compile)
+        4    0.000    0.000    0.000    0.000 {built-in method nt.lstat}
+        1    0.000    0.000    0.000    0.000 __init__.py:345(namedtuple)
+        3    0.000    0.000    0.000    0.000 synchronize.py:161(__init__)
+        4    0.000    0.000    0.000    0.000 {built-in method _winapi.WaitNamedPipe}
+        3    0.000    0.000    0.000    0.000 synchronize.py:50(__init__)
+        1    0.000    0.000    0.000    0.000 synchronize.py:10(<module>)
+        1    0.000    0.000    0.000    0.000 util.py:10(<module>)
+        3    0.000    0.000    0.000    0.000 {built-in method _thread.start_new_thread}
+       14    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1433(_get_spec)
+        7    0.000    0.000    0.000    0.000 tempfile.py:148(<listcomp>)
+        3    0.000    0.000    0.000    0.000 synchronize.py:114(_make_name)
+      177    0.000    0.000    0.000    0.000 {built-in method builtins.getattr}
+      104    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:64(<listcomp>)
+       56    0.000    0.000    0.000    0.000 random.py:343(choice)
+       24    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:68(_path_split)
+       16    0.000    0.000    0.000    0.000 hmac.py:61(<lambda>)
+       12    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:500(_classify_pyc)
+        2    0.000    0.000    0.000    0.000 spawn.py:150(get_preparation_data)
+        8    0.000    0.000    0.000    0.000 {built-in method _winapi.CreateFile}
+        7    0.000    0.000    0.000    0.000 tempfile.py:134(rng)
+       57    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:398(parent)
+        5    0.000    0.000    0.000    0.000 connection.py:961(reduce_pipe_connection)
+        2    0.000    0.000    0.000    0.000 functools.py:839(register)
+       14    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:636(spec_from_file_location)
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.eval}
+       16    0.000    0.000    0.000    0.000 hashlib.py:152(__hash_new)
+        2    0.000    0.000    0.000    0.000 _collections_abc.py:840(clear)
+        1    0.000    0.000    0.000    0.000 queues.py:10(<module>)
+       15    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:160(__exit__)
+       38    0.000    0.000    0.000    0.000 {built-in method _thread.allocate_lock}
+        5    0.000    0.000    0.000    0.000 util.py:186(__init__)
+      146    0.000    0.000    0.000    0.000 {method 'join' of 'str' objects}
+       17    0.000    0.000    0.000    0.000 managers.py:685(register)
+       56    0.000    0.000    0.000    0.000 random.py:237(_randbelow_with_getrandbits)
+       16    0.000    0.000    0.000    0.000 {built-in method _hashlib.new}
+        2    0.000    0.000    0.000    0.000 {built-in method _winapi.CreatePipe}
+       15    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:87(acquire)
+       15    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:112(release)
+       95    0.000    0.000    0.000    0.000 {built-in method builtins.hasattr}
+        5    0.000    0.000    0.000    0.000 process.py:344(__reduce__)
+        4    0.000    0.000    0.000    0.000 ntpath.py:77(join)
+       36    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:51(_unpack_uint32)
+      127    0.000    0.000    0.000    0.000 {method 'rpartition' of 'str' objects}
+        2    0.000    0.000    0.000    0.000 random.py:116(__init__)
+       12    0.000    0.000    0.000    0.000 {built-in method _winapi.CloseHandle}
+      121    0.000    0.000    0.000    0.000 sre_parse.py:164(__getitem__)
+        8    0.000    0.000    0.000    0.000 hmac.py:137(digest)
+        5    0.000    0.000    0.000    0.000 reduction.py:106(__init__)
+        1    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:757(create_module)
+        4    0.000    0.000    0.000    0.000 util.py:171(register_after_fork)
+        2    0.000    0.000    0.000    0.000 spawn.py:78(get_command_line)
+        2    0.000    0.000    0.000    0.000 process.py:80(__init__)
+      123    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:231(_verbose_message)
+        2    0.000    0.000    0.000    0.000 random.py:125(seed)
+       15    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:736(find_spec)
+        1    0.000    0.000    0.000    0.000 {built-in method _imp.create_builtin}
+        1    0.000    0.000    0.000    0.000 pool.py:644(close)
+        8    0.000    0.000    0.000    0.000 {built-in method _winapi.SetNamedPipeHandleState}
+    27/10    0.000    0.000    0.000    0.000 sre_parse.py:174(getwidth)
+        9    0.000    0.000    0.000    0.000 sre_parse.py:96(closegroup)
+       12    0.000    0.000    0.000    0.000 ntpath.py:124(splitdrive)
+        5    0.000    0.000    0.000    0.000 connection.py:281(_close)
+      261    0.000    0.000    0.000    0.000 {built-in method builtins.isinstance}
+        4    0.000    0.000    0.000    0.000 threading.py:521(__init__)
+        8    0.000    0.000    0.000    0.000 hmac.py:128(_current)
+       12    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:533(_validate_timestamp_pyc)
+        1    0.000    0.000    0.000    0.000 managers.py:739(BaseProxy)
+        4    0.000    0.000    0.000    0.000 {built-in method _winapi.ConnectNamedPipe}
+        1    0.000    0.000    0.000    0.000 queues.py:370(put)
+       15    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:185(cb)
+        4    0.000    0.000    0.000    0.000 weakref.py:162(__setitem__)
+        2    0.000    0.000    0.000    0.000 {function Random.seed at 0x0000023D1A32E8B0}
+        3    0.000    0.000    0.000    0.000 connection.py:178(close)
+       41    0.000    0.000    0.000    0.000 sre_parse.py:254(get)
+       77    0.000    0.000    0.000    0.000 sre_parse.py:233(__next)
+        1    0.000    0.000    0.000    0.000 util.py:369(__init__)
+       12    0.000    0.000    0.000    0.000 connection.py:122(__init__)
+      232    0.000    0.000    0.000    0.000 {method 'rstrip' of 'str' objects}
+        1    0.000    0.000    0.000    0.000 functools.py:798(singledispatch)
+        4    0.000    0.000    0.000    0.000 connection.py:59(_init_timeout)
+        1    0.000    0.000    0.000    0.000 pool.py:179(Process)
+       43    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:874(__enter__)
+        1    0.000    0.000    0.000    0.000 pool.py:450(apply_async)
+        1    0.000    0.000    0.000    0.000 _bootlocale.py:11(getpreferredencoding)
+        2    0.000    0.000    0.000    0.000 ntpath.py:450(normpath)
+        8    0.000    0.000    0.000    0.000 sre_compile.py:276(_optimize_charset)
+       22    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:36(_relax_case)
+        2    0.000    0.000    0.000    0.000 subprocess.py:282(_args_from_interpreter_flags)
+       14    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:811(find_spec)
+        1    0.000    0.000    0.000    0.000 weakref.py:105(__init__)
+       43    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:878(__exit__)
+        4    0.000    0.000    0.000    0.000 {built-in method nt.urandom}
+       27    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1272(_path_importer_cache)
+        6    0.000    0.000    0.000    0.000 {built-in method _imp.is_builtin}
+       32    0.000    0.000    0.000    0.000 {method 'update' of '_hashlib.HASH' objects}
+      206    0.000    0.000    0.000    0.000 {method 'append' of 'list' objects}
+       51    0.000    0.000    0.000    0.000 sre_parse.py:249(match)
+        4    0.000    0.000    0.000    0.000 threading.py:228(__init__)
+       16    0.000    0.000    0.000    0.000 {method 'digest' of '_hashlib.HASH' objects}
+        2    0.000    0.000    0.000    0.000 synchronize.py:100(__getstate__)
+       28    0.000    0.000    0.000    0.000 {built-in method nt.getpid}
+       12    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:463(_check_name_wrapper)
+        2    0.000    0.000    0.000    0.000 ntpath.py:61(isabs)
+        5    0.000    0.000    0.000    0.000 {built-in method _winapi.OpenProcess}
+        5    0.000    0.000    0.000    0.000 connection.py:135(__del__)
+        9    0.000    0.000    0.000    0.000 sre_parse.py:84(opengroup)
+       24    0.000    0.000    0.000    0.000 {method 'rsplit' of 'str' objects}
+        3    0.000    0.000    0.000    0.000 threading.py:962(_stop)
+        5    0.000    0.000    0.000    0.000 _weakrefset.py:82(add)
+        1    0.000    0.000    0.000    0.000 managers.py:50(<listcomp>)
+       15    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:351(__init__)
+       18    0.000    0.000    0.000    0.000 {method 'endswith' of 'str' objects}
+       49    0.000    0.000    0.000    0.000 {built-in method builtins.min}
+       29    0.000    0.000    0.000    0.000 {built-in method builtins.setattr}
+       36    0.000    0.000    0.000    0.000 {built-in method from_bytes}
+        1    0.000    0.000    0.000    0.000 sre_compile.py:536(_compile_info)
+        1    0.000    0.000    0.000    0.000 managers.py:490(__init__)
+        1    0.000    0.000    0.000    0.000 util.py:386(__init__)
+        4    0.000    0.000    0.000    0.000 context.py:354(set_spawning_popen)
+        2    0.000    0.000    0.000    0.000 process.py:61(_cleanup)
+        1    0.000    0.000    0.000    0.000 pool.py:744(__init__)
+      109    0.000    0.000    0.000    0.000 {method 'getrandbits' of '_random.Random' objects}
+       35    0.000    0.000    0.000    0.000 sre_parse.py:286(tell)
+       10    0.000    0.000    0.000    0.000 sre_parse.py:355(_escape)
+       73    0.000    0.000    0.000    0.000 {built-in method _imp.acquire_lock}
+        8    0.000    0.000    0.000    0.000 threading.py:1314(current_thread)
+       26    0.000    0.000    0.000    0.000 sre_parse.py:172(append)
+       12    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:35(_new_module)
+        8    0.000    0.000    0.000    0.000 sre_compile.py:423(_simple)
+       38    0.000    0.000    0.000    0.000 sre_parse.py:160(__len__)
+       51    0.000    0.000    0.000    0.000 {method 'get' of 'dict' objects}
+       14    0.000    0.000    0.000    0.000 {built-in method _imp.is_frozen}
+        8    0.000    0.000    0.000    0.000 sre_compile.py:249(_compile_charset)
+       15    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:152(__init__)
+        4    0.000    0.000    0.000    0.000 weakref.py:345(__new__)
+        1    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:415(spec_from_loader)
+        1    0.000    0.000    0.000    0.000 {built-in method _locale._getdefaultlocale}
+       38    0.000    0.000    0.000    0.000 {built-in method _thread.get_ident}
+        4    0.000    0.000    0.000    0.000 connection.py:100(address_type)
+        2    0.000    0.000    0.000    0.000 copyreg.py:99(_slotnames)
+        1    0.000    0.000    0.000    0.000 weakref.py:287(update)
+       73    0.000    0.000    0.000    0.000 {built-in method _imp.release_lock}
+        8    0.000    0.000    0.000    0.000 {method 'copy' of '_hashlib.HASH' objects}
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1114(exec_module)
+       12    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:946(__init__)
+        3    0.000    0.000    0.000    0.000 sre_parse.py:267(getuntil)
+        1    0.000    0.000    0.000    0.000 popen_spawn_win32.py:117(poll)
+        1    0.000    0.000    0.000    0.000 enum.py:852(__and__)
+        7    0.000    0.000    0.000    0.000 {built-in method _winapi.DuplicateHandle}
+       58    0.000    0.000    0.000    0.000 {built-in method nt.fspath}
+        2    0.000    0.000    0.000    0.000 popen_spawn_win32.py:97(duplicate_for_child)
+        1    0.000    0.000    0.000    0.000 {built-in method _winapi.GetExitCodeProcess}
+       13    0.000    0.000    0.000    0.000 context.py:351(get_spawning_popen)
+        1    0.000    0.000    0.000    0.000 queue.py:28(Queue)
+       22    0.000    0.000    0.000    0.000 sre_parse.py:111(__init__)
+        1    0.000    0.000    0.000    0.000 pool.py:173(Pool)
+        1    0.000    0.000    0.000    0.000 functools.py:35(update_wrapper)
+       15    0.000    0.000    0.000    0.000 {method 'pop' of 'dict' objects}
+       37    0.000    0.000    0.000    0.000 {method '__exit__' of '_thread.lock' objects}
+        3    0.000    0.000    0.000    0.000 threading.py:750(_newname)
+        4    0.000    0.000    0.000    0.000 tempfile.py:225(_get_candidate_names)
+        1    0.000    0.000    0.000    0.000 shared_memory.py:247(ShareableList)
+        1    0.000    0.000    0.000    0.000 managers.py:138(Server)
+        5    0.000    0.000    0.000    0.000 {method 'format' of 'str' objects}
+        1    0.000    0.000    0.000    0.000 synchronize.py:360(Barrier)
+       20    0.000    0.000    0.000    0.000 sre_parse.py:81(groups)
+        4    0.000    0.000    0.000    0.000 connection.py:88(_validate_family)
+        2    0.000    0.000    0.000    0.000 {built-in method nt.getcwd}
+       13    0.000    0.000    0.000    0.000 {method 'startswith' of 'str' objects}
+       16    0.000    0.000    0.000    0.000 {method 'translate' of 'bytes' objects}
+        8    0.000    0.000    0.000    0.000 hmac.py:111(update)
+        1    0.000    0.000    0.000    0.000 connection.py:119(_ConnectionBase)
+       56    0.000    0.000    0.000    0.000 {method 'bit_length' of 'int' objects}
+       12    0.000    0.000    0.000    0.000 {built-in method _imp._fix_co_filename}
+        2    0.000    0.000    0.000    0.000 queues.py:356(__getstate__)
+        1    0.000    0.000    0.000    0.000 weakref.py:365(__init__)
+        1    0.000    0.000    0.000    0.000 managers.py:483(BaseManager)
+       10    0.000    0.000    0.000    0.000 util.py:48(debug)
+        5    0.000    0.000    0.000    0.000 connection.py:173(fileno)
+        8    0.000    0.000    0.000    0.000 {method 'find' of 'str' objects}
+        2    0.000    0.000    0.000    0.000 enum.py:289(__call__)
+        2    0.000    0.000    0.000    0.000 reduction.py:71(duplicate)
+        1    0.000    0.000    0.000    0.000 synchronize.py:46(SemLock)
+        2    0.000    0.000    0.000    0.000 {built-in method msvcrt.open_osfhandle}
+        3    0.000    0.000    0.000    0.000 threading.py:1185(_make_invoke_excepthook)
+       14    0.000    0.000    0.000    0.000 {method 'replace' of 'str' objects}
+        4    0.000    0.000    0.000    0.000 weakref.py:350(__init__)
+        1    0.000    0.000    0.000    0.000 sre_parse.py:224(__init__)
+        1    0.000    0.000    0.000    0.000 queues.py:35(Queue)
+        1    0.000    0.000    0.000    0.000 managers.py:730(__init__)
+        2    0.000    0.000    0.000    0.000 spawn.py:132(_check_not_importing_main)
+       11    0.000    0.000    0.000    0.000 {method 'add' of 'set' objects}
+        3    0.000    0.000    0.000    0.000 threading.py:1118(daemon)
+        6    0.000    0.000    0.000    0.000 spawn.py:87(<genexpr>)
+        3    0.000    0.000    0.000    0.000 threading.py:268(_acquire_restore)
+        1    0.000    0.000    0.000    0.000 util.py:378(__enter__)
+        1    0.000    0.000    0.000    0.000 util.py:182(Finalize)
+        8    0.000    0.000    0.000    0.000 {method 'find' of 'bytearray' objects}
+        8    0.000    0.000    0.000    0.000 {method 'ljust' of 'bytes' objects}
+       12    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:781(create_module)
+        2    0.000    0.000    0.000    0.000 weakref.py:485(popitem)
+        1    0.000    0.000    0.000    0.000 shared_memory.py:49(SharedMemory)
+        1    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:241(_requires_builtin_wrapper)
+        6    0.000    0.000    0.000    0.000 threading.py:1103(daemon)
+        4    0.000    0.000    0.000    0.000 process.py:94(<genexpr>)
+        6    0.000    0.000    0.000    0.000 reduction.py:43(register)
+       15    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:406(has_location)
+       10    0.000    0.000    0.000    0.000 popen_spawn_win32.py:57(<genexpr>)
+       12    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:971(get_filename)
+        2    0.000    0.000    0.000    0.000 context.py:233(get_context)
+        4    0.000    0.000    0.000    0.000 context.py:357(assert_spawning)
+        1    0.000    0.000    0.000    0.000 pool.py:157(__init__)
+       12    0.000    0.000    0.000    0.000 {method 'getvalue' of '_io.BytesIO' objects}
+        3    0.000    0.000    0.000    0.000 threading.py:259(__exit__)
+        9    0.000    0.000    0.000    0.000 sre_compile.py:65(_combine_flags)
+        4    0.000    0.000    0.000    0.000 process.py:189(name)
+        1    0.000    0.000    0.000    0.000 managers.py:1224(_SharedMemoryTracker)
+       10    0.000    0.000    0.000    0.000 connection.py:163(readable)
+        1    0.000    0.000    0.000    0.000 queues.py:338(SimpleQueue)
+        1    0.000    0.000    0.000    0.000 reduction.py:206(_reduce_method)
+        1    0.000    0.000    0.000    0.000 queue.py:258(_PySimpleQueue)
+        3    0.000    0.000    0.000    0.000 synchronize.py:90(_make_methods)
+        3    0.000    0.000    0.000    0.000 {method 'split' of 'str' objects}
+        1    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:765(exec_module)
+        1    0.000    0.000    0.000    0.000 connection.py:437(Listener)
+        1    0.000    0.000    0.000    0.000 {built-in method _sre.compile}
+        8    0.000    0.000    0.000    0.000 {built-in method builtins.callable}
+        1    0.000    0.000    0.000    0.000 connection.py:353(Connection)
+        3    0.000    0.000    0.000    0.000 threading.py:256(__enter__)
+        1    0.000    0.000    0.000    0.000 util.py:108(_platform_supports_abstract_sockets)
+        1    0.000    0.000    0.000    0.000 types.py:171(__get__)
+        1    0.000    0.000    0.000    0.000 sre_compile.py:461(_get_literal_prefix)
+        9    0.000    0.000    0.000    0.000 process.py:37(current_process)
+        1    0.000    0.000    0.000    0.000 managers.py:1087(BarrierProxy)
+        1    0.000    0.000    0.000    0.000 managers.py:1261(SharedMemoryServer)
+        4    0.000    0.000    0.000    0.000 {built-in method __new__ of type object at 0x00007FF9E2995C60}
+        2    0.000    0.000    0.000    0.000 enum.py:580(__new__)
+        2    0.000    0.000    0.000    0.000 process.py:193(name)
+        2    0.000    0.000    0.000    0.000 {method 'index' of 'list' objects}
+        3    0.000    0.000    0.000    0.000 threading.py:271(_is_owned)
+        9    0.000    0.000    0.000    0.000 threading.py:529(is_set)
+        2    0.000    0.000    0.000    0.000 context.py:249(get_start_method)
+       10    0.000    0.000    0.000    0.000 {method 'items' of 'dict' objects}
+        1    0.000    0.000    0.000    0.000 managers.py:61(Token)
+        1    0.000    0.000    0.000    0.000 managers.py:1306(SharedMemoryManager)
+       10    0.000    0.000    0.000    0.000 connection.py:168(writable)
+        1    0.000    0.000    0.000    0.000 FileReader.py:10(__init__)
+        2    0.000    0.000    0.000    0.000 subprocess.py:272(_optim_args_from_interpreter_flags)
+        3    0.000    0.000    0.000    0.000 threading.py:265(_release_save)
+        7    0.000    0.000    0.000    0.000 {method 'release' of '_thread.lock' objects}
+        7    0.000    0.000    0.000    0.000 {method 'isidentifier' of 'str' objects}
+        2    0.000    0.000    0.000    0.000 threading.py:1049(name)
+        7    0.000    0.000    0.000    0.000 {built-in method _winapi.GetCurrentProcess}
+        1    0.000    0.000    0.000    0.000 codecs.py:260(__init__)
+        1    0.000    0.000    0.000    0.000 {method 'discard' of 'set' objects}
+        8    0.000    0.000    0.000    0.000 sre_parse.py:168(__setitem__)
+        6    0.000    0.000    0.000    0.000 context.py:187(get_context)
+        1    0.000    0.000    0.000    0.000 managers.py:67(__init__)
+        3    0.000    0.000    0.000    0.000 process.py:213(authkey)
+        1    0.000    0.000    0.000    0.000 managers.py:1048(ConditionProxy)
+        1    0.000    0.000    0.000    0.000 pkgutil.py:269(ImpLoader)
+        1    0.000    0.000    0.000    0.000 {method 'put' of '_queue.SimpleQueue' objects}
+        1    0.000    0.000    0.000    0.000 connection.py:644(PipeListener)
+        4    0.000    0.000    0.000    0.000 {method '__enter__' of '_thread.lock' objects}
+        4    0.000    0.000    0.000    0.000 {built-in method time.monotonic}
+        2    0.000    0.000    0.000    0.000 {method 'get' of 'mappingproxy' objects}
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1095(__init__)
+        2    0.000    0.000    0.000    0.000 sre_compile.py:595(isstring)
+        1    0.000    0.000    0.000    0.000 sre_parse.py:76(__init__)
+        1    0.000    0.000    0.000    0.000 managers.py:1021(IteratorProxy)
+        1    0.000    0.000    0.000    0.000 pool.py:276(_get_sentinels)
+        1    0.000    0.000    0.000    0.000 popen_spawn_win32.py:38(Popen)
+        1    0.000    0.000    0.000    0.000 runpy.py:25(_TempModule)
+        1    0.000    0.000    0.000    0.000 synchronize.py:210(Condition)
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    0.000    0.000    0.000    0.000 sre_compile.py:492(_get_charset_prefix)
+        1    0.000    0.000    0.000    0.000 managers.py:1002(Value)
+        1    0.000    0.000    0.000    0.000 connection.py:273(PipeConnection)
+        1    0.000    0.000    0.000    0.000 pool.py:742(ApplyResult)
+        4    0.000    0.000    0.000    0.000 {built-in method sys.intern}
+        2    0.000    0.000    0.000    0.000 ntpath.py:34(_get_bothseps)
+        1    0.000    0.000    0.000    0.000 sre_parse.py:921(fix_flags)
+        1    0.000    0.000    0.000    0.000 managers.py:1125(ValueProxy)
+        1    0.000    0.000    0.000    0.000 pool.py:918(ThreadPool)
+        2    0.000    0.000    0.000    0.000 {method 'copy' of 'list' objects}
+        4    0.000    0.000    0.000    0.000 {method '__contains__' of 'frozenset' objects}
+        2    0.000    0.000    0.000    0.000 {built-in method _imp.exec_dynamic}
+        2    0.000    0.000    0.000    0.000 {method 'lstrip' of 'str' objects}
+        4    0.000    0.000    0.000    0.000 {built-in method builtins.id}
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.max}
+        3    0.000    0.000    0.000    0.000 {built-in method builtins.ord}
+        4    0.000    0.000    0.000    0.000 __init__.py:419(<genexpr>)
+        3    0.000    0.000    0.000    0.000 process.py:99(_check_closed)
+        1    0.000    0.000    0.000    0.000 pool.py:80(MaybeEncodingError)
+        3    0.000    0.000    0.000    0.000 {method 'append' of 'collections.deque' objects}
+        2    0.000    0.000    0.000    0.000 {method 'setter' of 'property' objects}
+        2    0.000    0.000    0.000    0.000 {method 'popitem' of 'dict' objects}
+        3    0.000    0.000    0.000    0.000 context.py:197(get_start_method)
+        1    0.000    0.000    0.000    0.000 managers.py:1035(AcquirerProxy)
+        1    0.000    0.000    0.000    0.000 queue.py:242(LifoQueue)
+        1    0.000    0.000    0.000    0.000 connection.py:584(SocketListener)
+        1    0.000    0.000    0.000    0.000 managers.py:1106(NamespaceProxy)
+        1    0.000    0.000    0.000    0.000 queue.py:23(Full)
+        1    0.000    0.000    0.000    0.000 connection.py:770(ConnectionWrapper)
+        1    0.000    0.000    0.000    0.000 util.py:381(__exit__)
+        1    0.000    0.000    0.000    0.000 util.py:368(ForkAwareThreadLock)
+        1    0.000    0.000    0.000    0.000 pool.py:150(_PoolCache)
+        1    0.000    0.000    0.000    0.000 pkgutil.py:195(ImpImporter)
+        1    0.000    0.000    0.000    0.000 queues.py:295(JoinableQueue)
+        1    0.000    0.000    0.000    0.000 enum.py:683(value)
+        1    0.000    0.000    0.000    0.000 managers.py:109(RemoteError)
+        1    0.000    0.000    0.000    0.000 managers.py:464(State)
+        2    0.000    0.000    0.000    0.000 managers.py:551(<genexpr>)
+        1    0.000    0.000    0.000    0.000 managers.py:1075(EventProxy)
+        1    0.000    0.000    0.000    0.000 managers.py:1142(ListProxy)
+        1    0.000    0.000    0.000    0.000 queue.py:223(PriorityQueue)
+        1    0.000    0.000    0.000    0.000 pool.py:834(IMapIterator)
+        1    0.000    0.000    0.000    0.000 runpy.py:48(_ModifiedArgv0)
+        1    0.000    0.000    0.000    0.000 synchronize.py:321(Event)
+        2    0.000    0.000    0.000    0.000 {method 'lower' of 'str' objects}
+        1    0.000    0.000    0.000    0.000 process.py:205(daemon)
+        1    0.000    0.000    0.000    0.000 managers.py:729(ProcessLocalSet)
+        1    0.000    0.000    0.000    0.000 managers.py:990(Namespace)
+        1    0.000    0.000    0.000    0.000 managers.py:1177(PoolProxy)
+        1    0.000    0.000    0.000    0.000 pool.py:57(RemoteTraceback)
+        1    0.000    0.000    0.000    0.000 pool.py:348(_check_running)
+        1    0.000    0.000    0.000    0.000 synchronize.py:123(Semaphore)
+        1    0.000    0.000    0.000    0.000 synchronize.py:142(BoundedSemaphore)
+        1    0.000    0.000    0.000    0.000 synchronize.py:159(Lock)
+        1    0.000    0.000    0.000    0.000 {built-in method atexit.register}
+        1    0.000    0.000    0.000    0.000 util.py:385(ForkAwareLocal)
+        1    0.000    0.000    0.000    0.000 pool.py:63(ExceptionWithTraceback)
+        1    0.000    0.000    0.000    0.000 pool.py:791(MapResult)
+        1    0.000    0.000    0.000    0.000 popen_spawn_win32.py:22(_path_eq)
+        3    0.000    0.000    0.000    0.000 {method 'locked' of '_thread.lock' objects}
+        1    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:782(is_package)
+        2    0.000    0.000    0.000    0.000 sre_compile.py:453(_get_iscased)
+        1    0.000    0.000    0.000    0.000 connection.py:792(XmlListener)
+        1    0.000    0.000    0.000    0.000 pool.py:903(IMapUnorderedIterator)
+        2    0.000    0.000    0.000    0.000 spawn.py:45(get_executable)
+        1    0.000    0.000    0.000    0.000 runpy.py:165(_Error)
+        1    0.000    0.000    0.000    0.000 synchronize.py:184(RLock)
+        1    0.000    0.000    0.000    0.000 {method 'keys' of 'dict' objects}
+        1    0.000    0.000    0.000    0.000 {built-in method _imp.exec_builtin}
+        1    0.000    0.000    0.000    0.000 managers.py:1187(SyncManager)
+        1    0.000    0.000    0.000    0.000 {method 'values' of 'dict' objects}
+        1    0.000    0.000    0.000    0.000 {built-in method sys._getframe}
+        1    0.000    0.000    0.000    0.000 <string>:1(<module>)
+
+Even worse... AAHHHHH
+
 
 
 
