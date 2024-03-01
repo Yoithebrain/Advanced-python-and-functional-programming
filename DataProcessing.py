@@ -29,23 +29,23 @@ def read_file(reader, queue):
     queue.put("END")
 
 
-def process_lines(queue, reader, batch_size=5000):
-    batch = []
+def process_lines(queue, reader):
+    line_count = 0
     while True:
         line = queue.get()
         if line == "END":
             break
-        batch.append(line)
-        if len(batch) >= batch_size:
-            reader.process_rows(batch)
-            batch.clear()
-            print(f"Processed {len(batch)} lines", end="\r")
-    if batch:
-        reader.process_rows(batch)
-        print(f"Processed {len(batch)} lines", end="\r")
+        reader.process_rows([line])
+        line_count += 1
+        print(f"Processed {line_count} lines", end="\r")
 ###
 # Trying to multiprocess this now, for better performance
 # - CLY 290224 -
+####
+###
+# Update - Found a bottleneck in reading the file, therefore no multiprocessing gets applied to this step. Hopefully this stops the threads going ballistic over who gets to lock the file
+# for the next line.
+# - CLY 010324 -
 ####
 def main ():
     # Init profiler
@@ -55,10 +55,16 @@ def main ():
     reader = FileReader('files\\really_big_file_with_errors.txt')
     # queue an pool setup
     queue = multiprocessing.Manager().Queue()
-    pool = multiprocessing.Pool(processes=multiprocessing.cpu_count())
+    pool = multiprocessing.Pool(processes=1)
     # Pool applies to functions
-    pool.apply_async(read_file, args=(reader, queue))
+    #pool.apply_async(read_file, args=(reader, queue))
+
     pool.apply_async(process_lines, args=(queue, reader))
+
+    # Have to add this down here instead - Enqueuing happens here
+    for line in reader.read_lines():
+        queue.put(line)
+    queue.put("END")
     # Ending of pool resources
     pool.close()  # No more tasks will be added to the pool
     pool.join()   # Wait for all processes to complete
